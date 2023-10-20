@@ -1,0 +1,39 @@
+@font-face {
+  font-family: "noto";
+  font-weight: 400;
+  font-style: normal;
+  src: local("noto"),
+    url(@/assets/fonts/NotoSans-Regular.ttf)
+    format('truetype');
+}
+@font-face {
+  font-family: "noto";
+  font-weight: 700;
+  font-style: normal;
+  src: local("noto"),
+    url(@/assets/fonts/NotoSans-Bold.ttf)
+    format('truetype');
+}
+@font-face {
+  font-family: "noto";
+  font-weight: 900;
+  font-style: normal;
+  src: local("noto"),
+    url(@/assets/fonts/NotoSans-Black.ttf)
+    format('truetype');
+}
+
+.noto-font {
+  font-family: "noto";
+}
+
+/* Page transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.2s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
