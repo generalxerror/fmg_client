@@ -5,6 +5,7 @@ export default defineNuxtRouteMiddleware(() => {
   const userStore = useUserStore($pinia)
 
   if (!userStore.loggedIn) {
+    console.log('sign in first')
     return navigateTo('/auth')
   }
 })

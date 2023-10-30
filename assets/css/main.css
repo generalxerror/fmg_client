@@ -23,6 +23,28 @@
     format('truetype');
 }
 
+@font-face {
+  font-family: "pixelop";
+  font-weight: 400;
+  font-style: normal;
+  src: local("pixelop"),
+    url(@/assets/fonts/PixelOperator.ttf)
+    format('truetype');
+}
+
+@font-face {
+  font-family: "pixelop";
+  font-weight: 700;
+  font-style: normal;
+  src: local("pixelop"),
+    url(@/assets/fonts/PixelOperator-Bold.ttf)
+    format('truetype');
+}
+
+.pixelop-font {
+  font-family: "pixelop";
+}
+
 .noto-font {
   font-family: "noto";
 }
