@@ -8,7 +8,7 @@
     class="noto-font flex min-h-screen flex-col items-center bg-white"
   >
     <TopNav />
-    <div class="w-full max-w-contentMaxWidth grow">
+    <div class="w-full max-w-contentMaxWidth grow shadow-lg">
       <slot />
     </div>
     <Footer />

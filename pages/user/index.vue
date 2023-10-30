@@ -52,7 +52,10 @@ const handleLogout = async () => {
       console.log(logoutData)
 
       const cookieFmgToken = useCookie('fmg_token')
+      const cookieFmgRToken = useCookie('fmg_r_token')
+
       cookieFmgToken.value = null
+      cookieFmgRToken.value = null
 
       setTimeout(async () => {
         userStore.forgetUser()

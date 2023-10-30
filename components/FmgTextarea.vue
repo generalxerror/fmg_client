@@ -7,15 +7,15 @@
       {{ props.label }}
     </div>
     <div>
-      <input
+      <textarea
         ref="myInput"
+        :rows="props.rows"
         class="w-full rounded-sm border p-2 text-black outline-primary"
         :class="props.inputClass"
         :placeholder="props.placeholder"
         :disabled="props.disabled"
-        :value="props.inputValue"
         @input="valueChanged"
-      >
+      />
     </div>
   </div>
 </template>
@@ -45,6 +45,10 @@ const props = defineProps({
   inputClass: {
     type: String,
     default: ''
+  },
+  rows: {
+    type: Number,
+    default: 3
   }
 })
 

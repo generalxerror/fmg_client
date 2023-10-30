@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores/user'
 
 export default defineNuxtPlugin((_nuxtApp) => {
   globalThis.$fetch = ofetch.create({
-    onRequest ({ request, options }) {
+    onRequest ({ options }) {
       const config = useRuntimeConfig()
       const { $pinia } = useNuxtApp()
       const userStore = useUserStore($pinia)
@@ -12,10 +12,11 @@ export default defineNuxtPlugin((_nuxtApp) => {
         Accept: 'application/json'
       }
 
-      if (userStore.authToken) {
+      if (userStore.authToken && userStore.authRToken) {
         options.headers = {
           ...options.headers,
-          Authorization: `Bearer ${userStore.authToken}`
+          Authorization: `Bearer ${userStore.authToken}`,
+          'X-Rt': userStore.authRToken
         }
       }
 
@@ -24,13 +25,13 @@ export default defineNuxtPlugin((_nuxtApp) => {
     // onRequestError ({ error }) {
     //   console.error(error)
     // },
-    onResponse ({ request, response, options }) {
+    onResponse ({ response }) {
       const { $pinia } = useNuxtApp()
       const userStore = useUserStore($pinia)
 
       const newToken = response._data.auth_token
       if (newToken) {
-        const cookieFmgToken = useCookie('fmg_token')
+        const cookieFmgToken = useCookie('fmg_token', { maxAge: 2629800 })
         cookieFmgToken.value = newToken
         userStore.authToken = newToken
       }
