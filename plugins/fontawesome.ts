@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/named
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCircleNotch, faCircleUser, faQuoteLeft, faQuoteRight, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCircleCheck, faCircleNotch, faCircleUser, faCircleXmark, faQuoteLeft, faQuoteRight, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 import { faSquare } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -10,7 +10,9 @@ library.add(
   faQuoteLeft,
   faQuoteRight,
   faSquare,
-  faSquareCheck
+  faSquareCheck,
+  faCircleCheck,
+  faCircleXmark
 )
 
 export default defineNuxtPlugin((nuxtApp) => {

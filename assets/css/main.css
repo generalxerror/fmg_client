@@ -59,3 +59,25 @@
   opacity: 0;
   filter: blur(1rem);
 }
+
+/* TOASTS */
+.Vue-Toastification__toast {
+  min-height: 40px !important;
+  padding: 12px 14px !important;
+  border-radius: 3px !important;
+}
+.Vue-Toastification__toast.Vue-Toastification__toast--success {
+  background-color: #05A55A;
+}
+.Vue-Toastification__toast.Vue-Toastification__toast--error {
+  background-color: #DD3055;
+}
+.Vue-Toastification__toast.Vue-Toastification__toast--warning {
+  background-color: #EE8D30;
+}
+.Vue-Toastification__slideBlurred-leave-active {
+  animation-duration: 200ms !important;
+}
+.Vue-Toastification__slideBlurred-enter-active {
+  animation-duration: 200ms !important;
+}

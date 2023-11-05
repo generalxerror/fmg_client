@@ -1,11 +1,11 @@
 import { useUserStore } from '@/stores/user'
 
 export default defineNuxtRouteMiddleware(() => {
-  const { $pinia } = useNuxtApp()
+  const { $showToast, $pinia } = useNuxtApp()
   const userStore = useUserStore($pinia)
 
   if (!userStore.loggedIn) {
-    console.log('sign in first')
-    return navigateTo('/auth')
+    $showToast(['Please sign in first'], 'error')
+    return abortNavigation()
   }
 })
