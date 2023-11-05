@@ -7,6 +7,7 @@
         class="w-full rounded-l-full border px-4 py-2 font-bold text-black outline-primary"
         placeholder="App url or package Name"
         type="text"
+        @keydown.enter="handleClick"
       >
     </div>
     <div

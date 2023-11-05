@@ -5,12 +5,18 @@
     </div>
 
     <SearchSection
+      v-if="showSearch"
       :loading="searchLoading"
       :disabled="appInfo ? true : false"
       :show-clear="appInfo ? true : false"
+      :input-value="searchInputValue"
       @clicked="handleSearch"
       @clear="handleClear"
     />
+
+    <div v-if="searchLoading">
+      <Loading />
+    </div>
 
     <div
       v-if="appInfo"
@@ -75,8 +81,8 @@
       <div class="mt-8">
         <FmgInput
           v-model:inputValue="reportForm.fakeAd"
-          label="fake ad video url"
-          placeholder="https://www.youtube.com/watch?v=xxx"
+          label="fake ad (youtube ID)"
+          placeholder="dQw4w9WgXcQ"
         />
       </div>
 
@@ -98,13 +104,25 @@ import { submit } from '~/helpers/reportService'
 import { newReport } from '~/types/newReport'
 import { storeSearch } from '~/types/storeSearch'
 
+const { $showToast, $handleRequestError } = useNuxtApp()
+const route = useRoute()
+
+const showSearch = ref(true)
 const searchLoading = ref(false)
 const submitLoading = ref(false)
+const searchInputValue = ref('')
 const appInfo = ref<storeSearch>()
 const reportForm = ref<newReport>({ storeId: '', worksOffline: false, fakeAd: '', comment: '' })
 
 definePageMeta({
   middleware: ['auth']
+})
+
+onMounted(() => {
+  if (route.query.id !== '' && route.query.id !== undefined) {
+    handleSearch(route.query.id as string)
+    showSearch.value = false
+  }
 })
 
 const handleSearch = async (searchValue: string) => {
@@ -116,7 +134,7 @@ const handleSearch = async (searchValue: string) => {
       appInfo.value = searchResult
       reportForm.value.storeId = appInfo.value.store_id
     } catch (error) {
-      console.log(error)
+      $handleRequestError(error)
     } finally {
       searchLoading.value = false
     }
@@ -134,11 +152,11 @@ const handleSubmit = async () => {
 
     try {
       const submitResult: any = await submit(reportForm.value)
-      console.log(submitResult)
+      $showToast([submitResult.message], 'success')
 
       await navigateTo('/')
     } catch (error) {
-      console.log(error)
+      $handleRequestError(error)
     } finally {
       submitLoading.value = false
     }

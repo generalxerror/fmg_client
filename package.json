@@ -29,6 +29,7 @@
     "@pinia/nuxt": "^0.5.1",
     "date-fns": "^2.30.0",
     "eslint": "^8.50.0",
-    "pinia": "^2.1.7"
+    "pinia": "^2.1.7",
+    "vue-toastification": "^2.0.0-rc.5"
   }
 }

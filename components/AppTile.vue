@@ -24,16 +24,22 @@
         </div>
       </div>
 
-      <div class="line-clamp-1 text-xs font-bold text-dangerDark">
+      <div
+        v-if="props.devName"
+        class="line-clamp-1 text-xs font-bold text-dangerDark"
+      >
         {{ props.devName }}
       </div>
       <!-- Latest review -->
-      <div class="relative flex flex-col py-2">
+      <div
+        v-if="props.review"
+        class="relative flex flex-col py-2"
+      >
         <div class="absolute left-1 top-2 flex justify-start text-xl text-danger">
           <font-awesome-icon :icon="['fas', 'quote-left']" />
         </div>
-        <div class="rounded-lg border-2 border-danger bg-gray-100 p-4">
-          <div class="line-clamp-4 text-sm">
+        <div class="h-[100px] rounded-lg border-2 border-danger bg-gray-100 px-2 py-4">
+          <div class="line-clamp-4 text-xs">
             {{ props.review }}
           </div>
         </div>
@@ -42,8 +48,18 @@
         </div>
       </div>
       <!-- Review Date -->
-      <div class="flex justify-end text-xs text-gray-300">
-        {{ reviewDate }}
+      <div
+        v-if="props.reviewDate"
+        class="flex justify-end text-xs text-gray-300"
+      >
+        {{ props.reviewDate }}
+      </div>
+      <!-- Total Reports -->
+      <div
+        v-if="props.totalReports"
+        class="mt-4 rounded-lg bg-dangerDark p-2 text-center text-sm font-bold text-white"
+      >
+        {{ props.totalReports }} Report{{ props.totalReports > 1 ? 's' : '' }}
       </div>
     </div>
   </div>
@@ -65,15 +81,19 @@ const props = defineProps({
   },
   devName: {
     type: String,
-    required: true
+    default: null
   },
   review: {
     type: String,
-    required: true
+    default: null
   },
   reviewDate: {
     type: String,
-    required: true
+    default: null
+  },
+  totalReports: {
+    type: Number,
+    default: null
   }
 })
 

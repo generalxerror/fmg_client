@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores/user'
 import { useGlobalStore } from '@/stores/global'
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { $pinia } = useNuxtApp()
+  const { $showToast, $handleRequestError, $pinia } = useNuxtApp()
   const userStore = useUserStore($pinia)
   const globalStore = useGlobalStore($pinia)
   const cookieFmgToken = useCookie('fmg_token', { maxAge: 2629800 })
@@ -26,10 +26,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
       // We were redirected after login
       if (queryCode && queryRCode) {
+        $showToast(['Welcome Back!'], 'success')
         return navigateTo('/user')
       }
     } catch (error) {
-      console.log(error)
+      $handleRequestError(error)
       userStore.forgetUser()
       cookieFmgToken.value = null
       cookieFmgRToken.value = null

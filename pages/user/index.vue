@@ -40,6 +40,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const { $showToast, $handleRequestError } = useNuxtApp()
 const loading = ref(false)
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
@@ -49,7 +50,7 @@ const handleLogout = async () => {
     loading.value = true
     try {
       const logoutData: any = await logout()
-      console.log(logoutData)
+      $showToast([logoutData.message], 'success')
 
       const cookieFmgToken = useCookie('fmg_token')
       const cookieFmgRToken = useCookie('fmg_r_token')
@@ -62,7 +63,7 @@ const handleLogout = async () => {
         await navigateTo('/')
       }, 500)
     } catch (error) {
-      console.log(error)
+      $handleRequestError(error)
       loading.value = false
     }
   }

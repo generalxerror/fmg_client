@@ -8,7 +8,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt'
   ],
   css: [
-    '~/assets/css/main.css'
+    '~/assets/css/main.css',
+    'vue-toastification/dist/index.css'
   ],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -17,5 +18,10 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.API_URL
     }
+  },
+  build: {
+    transpile: [
+      'vue-toastification'
+    ]
   }
 })
