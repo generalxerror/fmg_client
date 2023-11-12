@@ -1,5 +1,9 @@
-import { postRequest } from './remoteService'
+import { getRequest, postRequest } from './remoteService'
 import { newReport } from '~/types/newReport'
+
+export const mine = (): Promise<any> => {
+  return getRequest('reports/mine')
+}
 
 export const submit = (reportForm: newReport): Promise<any> => {
   return postRequest('reports/create', {

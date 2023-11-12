@@ -95,7 +95,10 @@
     <div class="pixelop-font mt-8 text-2xl font-bold uppercase text-danger">
       Fake Ads
     </div>
-    <div class="grid w-full grid-cols-1 gap-4 rounded-lg border-2 border-danger px-2 py-4 md:grid-cols-3 lg:grid-cols-6">
+    <div
+      v-if="storeApp!.app.fake_ads.length > 0"
+      class="grid w-full grid-cols-1 gap-4 rounded-lg border-2 border-danger px-2 py-4 md:grid-cols-3 lg:grid-cols-6"
+    >
       <iframe
         v-for="fakeAd in storeApp!.app.fake_ads"
         :key="fakeAd.id"
@@ -107,17 +110,23 @@
         allowfullscreen
       />
     </div>
+    <div
+      v-else
+      class="pixelop-font flex w-full items-center justify-center rounded-lg border-2 border-danger px-2 py-4 text-2xl uppercase text-gray-400"
+    >
+      Nothing here yet
+    </div>
 
     <div class="my-4 h-0.5 w-full bg-gray-100" />
 
     <div class="pixelop-font mb-2 mt-8 flex flex-col text-2xl font-bold uppercase text-danger">
-      <div>Reports ({{ storeApp!.reports.length }})</div>
+      <div>Reports ({{ totalReports }})</div>
       <div class="text-xl text-gray-500">
         {{ workOfflinePercentage }}% Works offline
       </div>
     </div>
     <div
-      v-for="report in storeApp!.reports"
+      v-for="report in storeApp!.reports.data"
       :key="report.id"
       class="my-2 flex flex-col"
     >
@@ -152,6 +161,17 @@
         {{ format(new Date(report.created_at), 'MMM do, yyyy') }}
       </div>
     </div>
+
+    <div
+      v-if="nextPageUrl"
+      class="my-8"
+    >
+      <FmgButton
+        text="Load More"
+        :loading="nextPageLoading"
+        @clicked="loadNextPage"
+      />
+    </div>
   </div>
 </template>
 
@@ -159,18 +179,24 @@
 import { format } from 'date-fns'
 import { getApp } from '~/helpers/appService'
 import { appDetails } from '~/types/appDetails'
+import { getRequest } from '~/helpers/remoteService'
 
 const { $handleRequestError } = useNuxtApp()
 const route = useRoute()
 const loading = ref(true)
+const nextPageLoading = ref(false)
 const storeApp = ref<appDetails | null>()
 const appId = route.params.id as string
+const nextPageUrl = ref<string | null>(null)
+const totalReports = ref(0)
 
 onMounted(async () => {
   try {
     const appDetailsResult = await getApp(appId)
-
     storeApp.value = appDetailsResult
+
+    nextPageUrl.value = appDetailsResult.reports.next_page_url
+    totalReports.value = appDetailsResult.reports.total
   } catch (error) {
     $handleRequestError(error)
     navigateTo('/')
@@ -179,11 +205,26 @@ onMounted(async () => {
   }
 })
 
+const loadNextPage = async () => {
+  if (!nextPageLoading.value) {
+    nextPageLoading.value = true
+    try {
+      const nextPageResponse: any = await getRequest(nextPageUrl.value!)
+      storeApp.value!.reports.data.push(...nextPageResponse.reports.data)
+      nextPageUrl.value = nextPageResponse.reports.next_page_url
+    } catch (error) {
+      $handleRequestError(error)
+    } finally {
+      nextPageLoading.value = false
+    }
+  }
+}
+
 const workOfflinePercentage = computed((): string => {
   let totalWorking = 0
   let totalNotWorking = 0
 
-  storeApp.value?.reports.forEach((report: any) => {
+  storeApp.value?.reports.data.forEach((report: any) => {
     if (report.works_offline) {
       totalWorking++
     } else {
