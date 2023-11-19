@@ -68,7 +68,10 @@
         :input-value="storeApp!.app.developer.name"
       />
     </div>
-    <div class="mt-2">
+    <div
+      v-if="storeApp!.app.developer.website"
+      class="mt-2"
+    >
       <FmgInput
         label="website"
         disabled
